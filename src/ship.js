@@ -5,7 +5,8 @@ function Ship(mL) {
     if (hitCount < maxLength) {
       hitCount++;
     }
-  }
+  } 
+  
   function isSunk() {
     return hitCount == maxLength;
   }

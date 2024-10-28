@@ -1,4 +1,4 @@
-const Ship = require("./ship.js");
+import Ship from "./ship.js";
 
 function Gameboard() {
   let ships = [];
@@ -144,7 +144,7 @@ function Gameboard() {
     return false;
   }
 
-  return { createShip, recieveAttack, allShipSunk };
+  return { createShip, recieveAttack, allShipSunk ,hitCoords};
 }
 
-module.exports = Gameboard;
+export default Gameboard;

@@ -1,9 +1,10 @@
 function HUD(){
-    function createGameBoardDisplay(parent){
-        console.log(parent)
+    function createGameBoardDisplay(parent,callback){
         const gridSize = 50
-
+        let divList = [] 
+        
         for(let i = 0;i < 10;++i){
+            let divRow = []
             const row = document.createElement("div")
 
             row.style.display = "flex"
@@ -11,18 +12,28 @@ function HUD(){
             row.style.height = gridSize + "px"
             for(let j = 0; j < 10; ++j){
                 const col = document.createElement("div")
-                //col.style.height = gridSize + "px"
-                //col.style.width = gridSize + "px"
-                col.innerText = 2
-                addEventListener("click",()=>{console.log("1")})
+                col.addEventListener("click",()=>{
+                    callback(i+1,j+1)
+                }
+                )
                 col.classList.add("grid")
                 row.appendChild(col)
+                divRow.push(col)
             }
+            divList.push(divRow)
             parent.appendChild(row)
         }
 
+        return divList
     }
-    return {createGameBoardDisplay}
+
+    function drawHitMarker(div){
+        const circle = document.createElement("div")
+        circle.classList.add("hitMarker")
+        div.appendChild(circle)
+    }
+
+    return {createGameBoardDisplay, drawHitMarker}
 }
 
 module.exports = HUD

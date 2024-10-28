@@ -1,4 +1,4 @@
-const Gameboard = require("./gameboard");
+import Gameboard from "./gameboard";
 
 function Player(type) {
   //costructor
@@ -35,4 +35,4 @@ function Player(type) {
   }
 }
 
-module.exports = Player;
+export default Player;
