@@ -105,12 +105,12 @@ function Gameboard() {
   function recieveAttack(coords) {
     validateShipCoordinates(coords);
     validateGameboardCoords(coords);
-
+    console.log(coords)
     if (JSON.stringify(hitCoords).indexOf(JSON.stringify(coords)) != -1) {
       return "alreadyHit";
     }
 
-    hitCoords.push(coords);
+    hitCoords.push("Coords: ",coords);
 
     for (let ship of ships) {
       if (JSON.stringify(ship.coords).indexOf(JSON.stringify(coords)) != -1) {
@@ -144,7 +144,7 @@ function Gameboard() {
     return false;
   }
 
-  return { createShip, recieveAttack, allShipSunk ,hitCoords};
+  return { createShip, recieveAttack, allShipSunk, ships};
 }
 
 export default Gameboard;

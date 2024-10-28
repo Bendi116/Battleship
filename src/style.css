@@ -87,7 +87,7 @@ header{
 .grid{
     width: 50px;
     height: 50px;
-    background-color: rgb(187, 218, 235);
+    background-color: rgb(150, 205, 234);
     border: solid 2px black;
     /*border-width: 2px;
     border-color: black;*/
@@ -101,4 +101,17 @@ header{
     left: 20px;
     height: 10px;
     width: 10px;
+}
+
+.ship{
+    background-color: rgb(125, 145, 137);
+}
+
+.ship > .hitMarker{
+    background-color: rgb(163, 6, 6);
+
+}
+
+.sunk{
+    background-color: rgb(52, 56, 54);
 }

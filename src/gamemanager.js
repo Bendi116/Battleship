@@ -12,28 +12,55 @@ function gameManager(){
     
     function playerCalllback(i,j){
         if(playerTurn){
-            if(player.gameboard.recieveAttack([i,j]) != "alreadyHit"){
+            if(computer.gameboard.recieveAttack([i,j]) != "alreadyHit"){
                 console.log("Coordinate: (",i,",",j,")")
-                console.log(player.gameboard.hitCoords)
                 playerTurn = !playerTurn 
-                manageHitMarker(playerGridList[i-1][j-1])
+                manageHitMarker(computerGridList[j-1][i-1])
+               // manageShipHitDraw()
             }    
         }
     }
 
     function computerCalllback(i,j){
         if(!playerTurn){
-            console.log("Coordinate: (",i,",",j,")")
-            if(computer.gameboard.recieveAttack([i,j])!="alreadyHit"){
+            if(player.gameboard.recieveAttack([i,j])!="alreadyHit"){
+                console.log("Coordinate: (",i,",",j,")")
                 playerTurn = !playerTurn 
-                manageHitMarker(computerGridList[i-1][j-1])
+                manageHitMarker(playerGridList[j-1][i-1])
+            }
+        }
+       // manageShipDraw()
+
+    }
+
+    function runGame(){
+        playerGridList = hud.createGameBoardDisplay(document.querySelector("#left-board"),computerCalllback)
+        computerGridList = hud.createGameBoardDisplay(document.querySelector("#right-board"),playerCalllback)  
+        manageShipDraw()  
+    }
+
+    function manageShipDraw(){
+        for(let ship of player.gameboard.ships){
+            for(let coord of ship.coords){
+                hud.drawShipMarker(playerGridList[coord[1]][coord[0]])
+            }
+        }
+        for(let ship of computer.gameboard.ships){
+            for(let coord of ship.coords){
+                hud.drawShipMarker(computerGridList[coord[1]][coord[0]])
             }
         }
     }
 
-    function runGame(){
-        playerGridList = hud.createGameBoardDisplay(document.querySelector("#left-board"),playerCalllback)
-        computerGridList = hud.createGameBoardDisplay(document.querySelector("#right-board"),computerCalllback)    
+    function manageShipHitDraw(){
+        for(let s of computer.gameboard.ships){
+            console.log(s)
+            if(s.ship.isSunk()){
+                for(let coord of s.coords){
+                    hud.drawShipIsSunk(computerGridList[coord[0]][coord[1]])
+                }
+            }
+        }
     }
 
     function manageHitMarker(div){

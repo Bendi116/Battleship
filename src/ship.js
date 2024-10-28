@@ -8,6 +8,7 @@ function Ship(mL) {
   } 
   
   function isSunk() {
+    console.log("hit: ",hitCount," max: ",maxLength)
     return hitCount == maxLength;
   }
   return { hit, isSunk };

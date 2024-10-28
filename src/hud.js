@@ -13,7 +13,7 @@ function HUD(){
             for(let j = 0; j < 10; ++j){
                 const col = document.createElement("div")
                 col.addEventListener("click",()=>{
-                    callback(i+1,j+1)
+                    callback(j+1,i+1)
                 }
                 )
                 col.classList.add("grid")
@@ -33,7 +33,17 @@ function HUD(){
         div.appendChild(circle)
     }
 
-    return {createGameBoardDisplay, drawHitMarker}
+    function drawShipMarker(div){
+        div.classList.add("ship")
+    }
+
+    function drawShipIsSunk(div){
+        console.log(div)
+       div.classList.add("sunk")
+    }
+
+
+    return {createGameBoardDisplay, drawHitMarker,drawShipMarker,drawShipIsSunk}
 }
 
 module.exports = HUD

@@ -4,7 +4,7 @@ function Player(type) {
   //costructor
   const gameboard = Gameboard();
   if (type == "player") {
-    console.log("Player not implemented");
+    generateRandomGameBoard()
   } else if (type == "computer") {
     generateRandomGameBoard()
    
