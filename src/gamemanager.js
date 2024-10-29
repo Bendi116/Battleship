@@ -1,7 +1,7 @@
 import Player from "./player.js";
 import HUD from "./hud.js";
 
-function gameManager(){
+export default function gameManager(){
     let playerTurn = true
     const player = Player("player")
     let playerGridList = []
@@ -15,8 +15,9 @@ function gameManager(){
             if(computer.gameboard.recieveAttack([i,j]) != "alreadyHit"){
                 console.log("Coordinate: (",i,",",j,")")
                 playerTurn = !playerTurn 
+               
                 manageHitMarker(computerGridList[j-1][i-1])
-               // manageShipHitDraw()
+               //manageShipHitDraw()
             }    
         }
     }
@@ -57,7 +58,7 @@ function gameManager(){
             console.log(s)
             if(s.ship.isSunk()){
                 for(let coord of s.coords){
-                    hud.drawShipIsSunk(computerGridList[coord[0]][coord[1]])
+                    hud.drawShipIsSunk(computerGridList[coord[1]][coord[0]])
                 }
             }
         }
@@ -80,4 +81,3 @@ function gameManager(){
 
 }
 
-export default gameManager

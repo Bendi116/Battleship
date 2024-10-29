@@ -1,6 +1,6 @@
 import Ship from "./ship.js";
 
-function Gameboard() {
+export default function Gameboard() {
   let ships = [];
   let hitCoords = [];
   let shipSizes = new Map();
@@ -147,4 +147,3 @@ function Gameboard() {
   return { createShip, recieveAttack, allShipSunk, ships};
 }
 
-export default Gameboard;

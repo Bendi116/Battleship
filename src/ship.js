@@ -1,4 +1,4 @@
-function Ship(mL) {
+export default function Ship(mL) {
   let maxLength = mL;
   let hitCount = 0;
   function hit() {
@@ -14,4 +14,3 @@ function Ship(mL) {
   return { hit, isSunk };
 }
 
-module.exports = Ship;

@@ -1,4 +1,4 @@
-const Gameboard = require("./gameboard.js");
+import Gameboard from "./gameboard.js";
 
 const gb = Gameboard();
 gb.createShip(2, [2, 2], "h");

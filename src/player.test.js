@@ -1,4 +1,5 @@
-const Player = require("./player.js");
+import Player from "./player.js";
+
 const player3 = Player("computer")
 test("Test invalid player type", () => {
   expect(() => {

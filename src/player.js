@@ -1,6 +1,6 @@
 import Gameboard from "./gameboard";
 
-function Player(type) {
+export default function Player(type) {
   //costructor
   const gameboard = Gameboard();
   if (type == "player") {
@@ -35,4 +35,3 @@ function Player(type) {
   }
 }
 
-export default Player;

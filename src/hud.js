@@ -1,4 +1,4 @@
-function HUD(){
+export default function HUD(){
     function createGameBoardDisplay(parent,callback){
         const gridSize = 50
         let divList = [] 
@@ -46,4 +46,3 @@ function HUD(){
     return {createGameBoardDisplay, drawHitMarker,drawShipMarker,drawShipIsSunk}
 }
 
-module.exports = HUD
