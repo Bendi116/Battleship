@@ -13,7 +13,7 @@ export default function HUD(){
             for(let j = 0; j < 10; ++j){
                 const col = document.createElement("div")
                 col.addEventListener("click",()=>{
-                    callback(j+1,i+1)
+                    callback(j,i)
                 }
                 )
                 col.classList.add("grid")
@@ -38,7 +38,6 @@ export default function HUD(){
     }
 
     function drawShipIsSunk(div){
-        console.log(div)
        div.classList.add("sunk")
     }
 

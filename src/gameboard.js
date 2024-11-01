@@ -87,16 +87,15 @@ export default function Gameboard() {
     } else {
       shipSizes.set(_size, 1);
     }
-
-    console.log(shipSizes)
   }
 
   function validateGameboardCoords(coords) {
+    console.log(coords)
     if (
-      coords[0] - 1 < 0 ||
-      coords[0] - 1 > 9 ||
-      coords[1] - 1 < 0 ||
-      coords[1] - 1 > 9
+      coords[0] < 0 ||
+      coords[0]  > 9 ||
+      coords[1]  < 0 ||
+      coords[1] > 9
     ) {
       throw new Error("Invalid gameboard coordinates.");
     }
@@ -105,7 +104,6 @@ export default function Gameboard() {
   function recieveAttack(coords) {
     validateShipCoordinates(coords);
     validateGameboardCoords(coords);
-    console.log(coords)
     if (JSON.stringify(hitCoords).indexOf(JSON.stringify(coords)) != -1) {
       return "alreadyHit";
     }
@@ -144,6 +142,14 @@ export default function Gameboard() {
     return false;
   }
 
-  return { createShip, recieveAttack, allShipSunk, ships};
+  function getShips(){
+    return ships
+  }
+
+  function getHitCoords(){
+    return hitCoords
+  }
+
+  return { createShip, recieveAttack, allShipSunk, getShips,getHitCoords};
 }
 

@@ -13,11 +13,9 @@ export default function gameManager(){
     function playerCalllback(i,j){
         if(playerTurn){
             if(computer.gameboard.recieveAttack([i,j]) != "alreadyHit"){
-                console.log("Coordinate: (",i,",",j,")")
                 playerTurn = !playerTurn 
-               
-                manageHitMarker(computerGridList[j-1][i-1])
-               //manageShipHitDraw()
+                manageHitMarker(computerGridList[j][i])
+                manageComputerShipHitDraw()
             }    
         }
     }
@@ -25,12 +23,11 @@ export default function gameManager(){
     function computerCalllback(i,j){
         if(!playerTurn){
             if(player.gameboard.recieveAttack([i,j])!="alreadyHit"){
-                console.log("Coordinate: (",i,",",j,")")
                 playerTurn = !playerTurn 
-                manageHitMarker(playerGridList[j-1][i-1])
+                manageHitMarker(playerGridList[j][i])
+                managePlayerShipHitDraw()
             }
         }
-       // manageShipDraw()
 
     }
 
@@ -41,27 +38,43 @@ export default function gameManager(){
     }
 
     function manageShipDraw(){
-        for(let ship of player.gameboard.ships){
+        for(let ship of player.gameboard.getShips()){
             for(let coord of ship.coords){
+                console.log(coord)
                 hud.drawShipMarker(playerGridList[coord[1]][coord[0]])
             }
         }
-        for(let ship of computer.gameboard.ships){
+        for(let ship of computer.gameboard.getShips()){
             for(let coord of ship.coords){
                 hud.drawShipMarker(computerGridList[coord[1]][coord[0]])
             }
         }
     }
 
-    function manageShipHitDraw(){
-        for(let s of computer.gameboard.ships){
-            console.log(s)
+    function manageComputerShipHitDraw(){
+        for(let s of computer.gameboard.getShips()){
             if(s.ship.isSunk()){
                 for(let coord of s.coords){
+
                     hud.drawShipIsSunk(computerGridList[coord[1]][coord[0]])
+                    hitComputerAdjacent(coord)
                 }
             }
         }
+
+     
+    }
+
+    function managePlayerShipHitDraw(){
+        for(let s of player.gameboard.getShips()){
+            if(s.ship.isSunk()){
+                for(let coord of s.coords){
+                    hud.drawShipIsSunk(playerGridList[coord[1]][coord[0]])
+                    hitPlayerAdjacent(coord)
+                }
+            }
+        }
+     
     }
 
     function manageHitMarker(div){
@@ -74,6 +87,30 @@ export default function gameManager(){
         }
         if(!hasHitMarker){
             hud.drawHitMarker(div)
+        }
+    }
+
+
+    function hitPlayerAdjacent(coord){
+        for(let i = -1;i<2;++i){
+            for(let j = -1;j<2;++j){
+                if(coord[0]+i >= 0 && coord[0]+i <= 9 && coord[1]+j >= 0 && coord[1]+j <= 9){
+                    player.gameboard.recieveAttack([coord[0]+i,coord[1]+j])
+                    manageHitMarker(playerGridList[coord[1]+j][coord[0]+i])
+                }
+            }
+        }
+    }
+
+    function hitComputerAdjacent(coord){
+        for(let i = -1;i<2;++i){
+            for(let j = -1;j<2;++j){
+                console.log(i," ",j)
+                if(coord[0]+i >= 0 && coord[0]+i <= 9 && coord[1]+j >= 0 && coord[1]+j <= 9){
+                    computer.gameboard.recieveAttack([coord[0]+i,coord[1]+j])
+                    manageHitMarker(computerGridList[coord[1]+j][coord[0]+i])
+                }
+            }
         }
     }
 

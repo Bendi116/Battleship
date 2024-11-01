@@ -11,7 +11,6 @@ export default function Player(type) {
   } else {
     throw new Error("Invalid player type!");
   }
-  return { gameboard };
 
   function generateRandomGameBoard(){
     for(let i = 0; i < 4;++i){
@@ -33,5 +32,17 @@ export default function Player(type) {
       }
     }
   }
+
+  function randomHit(gb){
+    let x = Math.floor(Math.random() * 10);
+    let y = Math.floor(Math.random() * 10);
+    while(JSON.stringify(gb.getHitCoords()).indexOf(JSON.stringify([x,y]) != -1)){
+      let x = Math.floor(Math.random() * 10);
+      let y = Math.floor(Math.random() * 10);
+    }
+    gb.recieveAttack([x,y])
+  }
+
+  return { gameboard ,randomHit};
 }
 
