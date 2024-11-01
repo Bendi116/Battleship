@@ -33,14 +33,16 @@ export default function Player(type) {
     }
   }
 
-  function randomHit(gb){
+  function randomHit(hitCoords){
     let x = Math.floor(Math.random() * 10);
     let y = Math.floor(Math.random() * 10);
-    while(JSON.stringify(gb.getHitCoords()).indexOf(JSON.stringify([x,y]) != -1)){
-      let x = Math.floor(Math.random() * 10);
-      let y = Math.floor(Math.random() * 10);
+
+    while(JSON.stringify(hitCoords).indexOf(JSON.stringify([x,y])) != -1){
+      x = Math.floor(Math.random() * 10);
+      y = Math.floor(Math.random() * 10);
     }
-    gb.recieveAttack([x,y])
+    
+    return [x,y]
   }
 
   return { gameboard ,randomHit};

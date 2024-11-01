@@ -10,17 +10,20 @@ export default function gameManager(){
 
     const hud = HUD()
     
-    function playerCalllback(i,j){
-        if(playerTurn){
-            if(computer.gameboard.recieveAttack([i,j]) != "alreadyHit"){
+    function playerCallback(i,j){
+        if(computer.gameboard.recieveAttack([i,j]) != "alreadyHit"){
                 playerTurn = !playerTurn 
                 manageHitMarker(computerGridList[j][i])
                 manageComputerShipHitDraw()
+                let [x,y] = computer.randomHit(player.gameboard.getHitCoords())
+                player.gameboard.recieveAttack([x,y])
+                manageHitMarker(playerGridList[y][x])
+                managePlayerShipHitDraw()
             }    
-        }
+        
     }
-
-    function computerCalllback(i,j){
+/*
+    function computerCallback(i,j){
         if(!playerTurn){
             if(player.gameboard.recieveAttack([i,j])!="alreadyHit"){
                 playerTurn = !playerTurn 
@@ -29,24 +32,23 @@ export default function gameManager(){
             }
         }
 
-    }
+    }*/
 
     function runGame(){
-        playerGridList = hud.createGameBoardDisplay(document.querySelector("#left-board"),computerCalllback)
-        computerGridList = hud.createGameBoardDisplay(document.querySelector("#right-board"),playerCalllback)  
+        playerGridList = hud.createGameBoardDisplay(document.querySelector("#left-board"),()=>{})
+        computerGridList = hud.createGameBoardDisplay(document.querySelector("#right-board"),playerCallback)  
         manageShipDraw()  
     }
 
     function manageShipDraw(){
         for(let ship of player.gameboard.getShips()){
             for(let coord of ship.coords){
-                console.log(coord)
                 hud.drawShipMarker(playerGridList[coord[1]][coord[0]])
             }
         }
         for(let ship of computer.gameboard.getShips()){
             for(let coord of ship.coords){
-                hud.drawShipMarker(computerGridList[coord[1]][coord[0]])
+                hud.drawComputerShipMarker(computerGridList[coord[1]][coord[0]])
             }
         }
     }
@@ -105,7 +107,6 @@ export default function gameManager(){
     function hitComputerAdjacent(coord){
         for(let i = -1;i<2;++i){
             for(let j = -1;j<2;++j){
-                console.log(i," ",j)
                 if(coord[0]+i >= 0 && coord[0]+i <= 9 && coord[1]+j >= 0 && coord[1]+j <= 9){
                     computer.gameboard.recieveAttack([coord[0]+i,coord[1]+j])
                     manageHitMarker(computerGridList[coord[1]+j][coord[0]+i])

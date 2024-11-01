@@ -37,11 +37,15 @@ export default function HUD(){
         div.classList.add("ship")
     }
 
+    function drawComputerShipMarker(div){
+        div.classList.add("cShip")
+    }
+
     function drawShipIsSunk(div){
        div.classList.add("sunk")
     }
 
 
-    return {createGameBoardDisplay, drawHitMarker,drawShipMarker,drawShipIsSunk}
+    return {createGameBoardDisplay, drawHitMarker,drawShipMarker,drawShipIsSunk,drawComputerShipMarker}
 }
 

@@ -111,6 +111,10 @@ header{
     background-color: rgb(163, 6, 6);
 
 }
+.cShip > .hitMarker{
+    background-color: rgb(163, 6, 6);
+
+}
 
 .sunk{
     background-color: rgb(52, 56, 54);
