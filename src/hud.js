@@ -1,51 +1,155 @@
-export default function HUD(){
-    function createGameBoardDisplay(parent,callback){
-        const gridSize = 50
-        let divList = [] 
-        
-        for(let i = 0;i < 10;++i){
-            let divRow = []
-            const row = document.createElement("div")
+export default function HUD() {
+  const contentDiv = document.getElementById("content");
 
-            row.style.display = "flex"
-            row.style.flexDirection = "row"
-            row.style.height = gridSize + "px"
-            for(let j = 0; j < 10; ++j){
-                const col = document.createElement("div")
-                col.addEventListener("click",()=>{
-                    callback(j,i)
-                }
-                )
-                col.classList.add("grid")
-                row.appendChild(col)
-                divRow.push(col)
-            }
-            divList.push(divRow)
-            parent.appendChild(row)
-        }
+  function createGameBoardDisplay(parent, callback = () => {}) {
+    const gridSize = 50;
+    let divList = [];
 
-        return divList
+    for (let i = 0; i < 10; ++i) {
+      let divRow = [];
+      const row = document.createElement("div");
+
+      row.style.display = "flex";
+      row.style.flexDirection = "row";
+      row.style.height = gridSize + "px";
+      for (let j = 0; j < 10; ++j) {
+        const col = document.createElement("div");
+        col.addEventListener("click", () => {
+          callback(j, i);
+        });
+        col.addEventListener("dragenter", (e) => {
+          console.log(e);
+        });
+        col.classList.add("grid");
+        row.appendChild(col);
+        divRow.push(col);
+      }
+      divList.push(divRow);
+      parent.appendChild(row);
     }
 
-    function drawHitMarker(div){
-        const circle = document.createElement("div")
-        circle.classList.add("hitMarker")
-        div.appendChild(circle)
+    return divList;
+  }
+
+  function drawHitMarker(div) {
+    const circle = document.createElement("div");
+    circle.classList.add("hitMarker");
+    div.appendChild(circle);
+  }
+
+  function drawShipMarker(div) {
+    div.classList.add("ship");
+  }
+
+  function drawComputerShipMarker(div) {
+    div.classList.add("cShip");
+  }
+
+  function drawShipIsSunk(div) {
+    div.classList.add("sunk");
+  }
+
+  function createWinScreen(winner) {
+    delAllChildOfContentDiv();
+    contentDiv.innerText = winner + " win the game!";
+    contentDiv.classList.add("winScreen");
+  }
+
+  function createStartScreen(callback) {
+    const startBtn = document.createElement("button");
+    startBtn.id = "startBtn";
+    startBtn.addEventListener("click", () => {
+      callback();
+      hideStartBtn();
+    });
+    startBtn.innerText = "Start";
+    contentDiv.appendChild(startBtn);
+  }
+
+  function hideStartBtn() {
+    const startBtn = document.getElementById("startBtn");
+    contentDiv.removeChild(startBtn);
+  }
+
+  function createShipPlacementBox(shipPlacementDict) {
+    const shipPlacementDiv = document.createElement("div");
+    shipPlacementDiv.id = "shipPlacmentDiv";
+
+    const horiontalPlacementInput = document.createElement("input");
+    horiontalPlacementInput.type = "radio";
+    horiontalPlacementInput.id = "horizontal";
+    horiontalPlacementInput.name = "placmentDirection";
+    horiontalPlacementInput.checked = true;
+
+    const horiontalPlacementInputLabel = document.createElement("label");
+    horiontalPlacementInputLabel.htmlFor = "horizontal";
+    horiontalPlacementInputLabel.innerHTML = "Horizontal";
+
+    const verticalPlacementInput = document.createElement("input");
+    verticalPlacementInput.type = "radio";
+    verticalPlacementInput.id = "vertical";
+    verticalPlacementInput.name = "placmentDirection";
+
+    const verticalPlacementInputLabel = document.createElement("label");
+    verticalPlacementInputLabel.htmlFor = "vertical";
+    verticalPlacementInputLabel.innerHTML = "Vertical";
+
+    shipPlacementDiv.appendChild(horiontalPlacementInput);
+    shipPlacementDiv.appendChild(horiontalPlacementInputLabel);
+    shipPlacementDiv.appendChild(verticalPlacementInput);
+    shipPlacementDiv.appendChild(verticalPlacementInputLabel);
+
+    // let lastEnteredGrid
+
+    for (const [key, value] of Object.entries(shipPlacementDict)) {
+      const div = document.createElement("div");
+      const ShipBoxConatiner = document.createElement("div");
+
+      div.id = `${key}-container`;
+      div.classList.add("shipPlacementOptionContainer");
+      ShipBoxConatiner.classList.add("shipBoxContainer");
+      ShipBoxConatiner.draggable = true;
+
+      for (let i = 0; i < parseInt(key); ++i) {
+        const ShipBox = document.createElement("div");
+        ShipBox.classList.add("ShipBox");
+        ShipBoxConatiner.appendChild(ShipBox);
+      }
+      const amountLabel = document.createElement("div");
+      amountLabel.id = `${key}-amount`;
+      amountLabel.innerText = `X ${value}`;
+      /*
+      ShipBoxConatiner.addEventListener("dragover", (e) => {
+        console.log(e)
+        lastEnteredGrid = e.toElement
+    });
+    ShipBoxConatiner.addEventListener("dragend", (e) => {
+        console.log(lastEnteredGrid)
+    });*/
+
+      div.appendChild(ShipBoxConatiner);
+      div.appendChild(amountLabel);
+
+      shipPlacementDiv.appendChild(div);
     }
 
-    function drawShipMarker(div){
-        div.classList.add("ship")
+    contentDiv.appendChild(shipPlacementDiv);
+  }
+
+  function delAllChildOfContentDiv() {
+    while (contentDiv.firstChild()) {
+      contentDiv.removeChild(contentDiv.firstChild());
     }
+  }
 
-    function drawComputerShipMarker(div){
-        div.classList.add("cShip")
-    }
-
-    function drawShipIsSunk(div){
-       div.classList.add("sunk")
-    }
-
-
-    return {createGameBoardDisplay, drawHitMarker,drawShipMarker,drawShipIsSunk,drawComputerShipMarker}
+  return {
+    createGameBoardDisplay,
+    drawHitMarker,
+    drawShipMarker,
+    drawShipIsSunk,
+    drawComputerShipMarker,
+    createWinScreen,
+    createStartScreen,
+    createShipPlacementBox,
+  };
 }
-

@@ -5,12 +5,10 @@ export default function Ship(mL) {
     if (hitCount < maxLength) {
       hitCount++;
     }
-  } 
-  
+  }
+
   function isSunk() {
-    console.log("hit: ",hitCount," max: ",maxLength)
     return hitCount == maxLength;
   }
   return { hit, isSunk };
 }
-

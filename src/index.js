@@ -1,6 +1,5 @@
 import "./style.css";
-import gameManager from "./gamemanager.js"
+import gameManager from "./gamemanager.js";
 
-const gamemanager = gameManager()
-gamemanager.runGame()
-
+const gamemanager = gameManager();
+gamemanager.runGame();

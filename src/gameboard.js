@@ -3,6 +3,7 @@ import Ship from "./ship.js";
 export default function Gameboard() {
   let ships = [];
   let hitCoords = [];
+  let adjacentHitCoords = [];
   let shipSizes = new Map();
 
   class shipInSea {
@@ -90,13 +91,7 @@ export default function Gameboard() {
   }
 
   function validateGameboardCoords(coords) {
-    console.log(coords)
-    if (
-      coords[0] < 0 ||
-      coords[0]  > 9 ||
-      coords[1]  < 0 ||
-      coords[1] > 9
-    ) {
+    if (coords[0] < 0 || coords[0] > 9 || coords[1] < 0 || coords[1] > 9) {
       throw new Error("Invalid gameboard coordinates.");
     }
   }
@@ -108,11 +103,15 @@ export default function Gameboard() {
       return "alreadyHit";
     }
 
-    hitCoords.push("Coords: ",coords);
+    hitCoords.push(coords);
 
     for (let ship of ships) {
       if (JSON.stringify(ship.coords).indexOf(JSON.stringify(coords)) != -1) {
         ship.ship.hit();
+        if (!ship.ship.isSunk()) {
+          hitAdjacentCoords(coords);
+        }
+        // console.log(adjacentHitCoords)
         return "hit";
       }
     }
@@ -142,14 +141,60 @@ export default function Gameboard() {
     return false;
   }
 
-  function getShips(){
-    return ships
+  function hitAdjacentCoords(hitCoord) {
+    let coords = [];
+    for (let i = 0; i < 2; ++i) {
+      if (i == 0) {
+        if (hitCoord[1] - 1 >= 0) {
+          coords.push([hitCoord[0], hitCoord[1] - 1]);
+        }
+      } else {
+        if (hitCoord[1] + 1 <= 9) {
+          coords.push([hitCoord[0], hitCoord[1] + 1]);
+        }
+      }
+    }
+
+    for (let i = 0; i < 2; ++i) {
+      if (i == 0) {
+        if (hitCoord[0] - 1 >= 0) {
+          coords.push([hitCoord[0] - 1, hitCoord[1]]);
+        }
+      } else {
+        if (hitCoord[0] + 1 <= 9) {
+          coords.push([hitCoord[0] + 1, hitCoord[1]]);
+        }
+      }
+    }
+    for (const c of coords) {
+      if (JSON.stringify(hitCoords).indexOf(JSON.stringify(c)) == -1) {
+        adjacentHitCoords.push(c);
+      }
+    }
   }
 
-  function getHitCoords(){
-    return hitCoords
+  function getShips() {
+    return ships;
+  }
+  function getAdjacentHitCoords() {
+    return adjacentHitCoords;
   }
 
-  return { createShip, recieveAttack, allShipSunk, getShips,getHitCoords};
+  function setAdjacentHitCoords(aHC) {
+    adjacentHitCoords = aHC;
+  }
+
+  function getHitCoords() {
+    return hitCoords;
+  }
+
+  return {
+    createShip,
+    recieveAttack,
+    allShipSunk,
+    getShips,
+    getHitCoords,
+    getAdjacentHitCoords,
+    setAdjacentHitCoords,
+  };
 }
-

@@ -1,6 +1,6 @@
 import Player from "./player.js";
 
-const player3 = Player("computer")
+const player3 = Player("computer");
 test("Test invalid player type", () => {
   expect(() => {
     const player = Player("plaeyr");
