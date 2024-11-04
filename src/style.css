@@ -224,3 +224,10 @@ header {
   display: flex;
   flex-direction: row;
 }
+
+
+
+
+.drag-over{
+  border: dashed 3px red;
+}

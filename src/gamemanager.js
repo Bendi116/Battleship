@@ -68,6 +68,8 @@ export default function gameManager() {
     };
     playerGridList = hud.createGameBoardDisplay(
       document.querySelector("#left-board"),
+      ()=>{},
+      getDropGrid
     );
 
     hud.createShipPlacementBox(shipPlacementDict);
@@ -76,7 +78,7 @@ export default function gameManager() {
   function startGame() {
     computerGridList = hud.createGameBoardDisplay(
       document.querySelector("#right-board"),
-      playerCallback,
+      playerCallback
     );
     manageShipDraw();
   }
@@ -159,6 +161,22 @@ export default function gameManager() {
         }
       }
     }
+  }
+
+  function findGrid(div){
+    for(const row of playerGridList){
+      for(const col of row){
+        if(col == div)
+        {
+          return col
+        }
+      }
+    }
+  }
+
+  function getDropGrid(div,size,alignment){
+    const col = findGrid(div)
+    console.log(col,size,alignment)
   }
 
   return { runGame };
