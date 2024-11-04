@@ -40,7 +40,7 @@ test("Test invalid arguments", () => {
     gb.recieveAttack([-2, 3]);
   }).toThrow("Invalid gameboard coordinates.");
   expect(() => {
-    gb.recieveAttack([0, 0]);
+    gb.recieveAttack([10, 10]);
   }).toThrow("Invalid gameboard coordinates.");
   expect(() => {
     gb.recieveAttack([3, 5, 6]);

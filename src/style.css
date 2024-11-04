@@ -204,8 +204,8 @@ header {
 }
 
 .ShipBox {
-  width: 50px;
-  height: 50px;
+  width: 20px;
+  height: 20px;
   background-color: aqua;
   border: 1px solid black;
 }
@@ -225,9 +225,14 @@ header {
   flex-direction: row;
 }
 
-
-
-
-.drag-over{
+.drag-over {
   border: dashed 3px red;
+}
+
+.rotate {
+  rotate: 90deg;
+}
+
+.hide {
+  display: none;
 }

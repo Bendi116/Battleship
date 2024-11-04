@@ -1,7 +1,7 @@
 export default function HUD() {
   const contentDiv = document.getElementById("content");
 
-  function createGameBoardDisplay(parent, callback = () => {},setDropShip) {
+  function createGameBoardDisplay(parent, callback = () => {}, setDropShip) {
     const gridSize = 50;
     let divList = [];
 
@@ -14,28 +14,28 @@ export default function HUD() {
       row.style.height = gridSize + "px";
       for (let j = 0; j < 10; ++j) {
         const col = document.createElement("div");
-        col.addEventListener("dragenter",(e)=>{
-          e.preventDefault()
-          e.target.classList.add('drag-over');
-
-        })
-        col.addEventListener("dragover",(e)=>{
-          e.preventDefault()
+        col.addEventListener("dragenter", (e) => {
+          e.preventDefault();
+          e.target.classList.add("drag-over");
+        });
+        col.addEventListener("dragover", (e) => {
+          e.preventDefault();
           //e.target.classList.add('drag-over');
+        });
+        col.addEventListener("dragleave", (e) => {
+          e.target.classList.remove("drag-over");
+        });
+        col.addEventListener("drop", (e) => {
+          e.target.classList.remove("drag-over");
+          const data = e.dataTransfer.getData("text/plain");
+          console.log(e);
+          setDropShip(
+            col,
+            data.slice(0, data.indexOf(",")),
+            data.slice(data.indexOf(",") + 1) == "true" ? "h" : "v",
+          );
+        });
 
-        })
-        col.addEventListener("dragleave",(e)=>{
-          e.target.classList.remove('drag-over');
-
-        })
-        col.addEventListener("drop",(e)=>{
-          e.target.classList.remove('drag-over');
-          const data = e.dataTransfer.getData("text/plain")
-          console.log(e)
-          setDropShip(col,data[0],data[1]==true?"horizontal":"vertical")
-        })
-
-       
         col.classList.add("grid");
         row.appendChild(col);
         divRow.push(col);
@@ -46,8 +46,6 @@ export default function HUD() {
 
     return divList;
   }
-
-
 
   function drawHitMarker(div) {
     const circle = document.createElement("div");
@@ -120,7 +118,6 @@ export default function HUD() {
     // let lastEnteredGrid
 
     for (const [key, value] of Object.entries(shipPlacementDict)) {
-
       const div = document.createElement("div");
       const ShipBoxConatiner = document.createElement("div");
 
@@ -137,12 +134,18 @@ export default function HUD() {
       const amountLabel = document.createElement("div");
       amountLabel.id = `${key}-amount`;
       amountLabel.innerText = `X ${value}`;
-      
       ShipBoxConatiner.addEventListener("dragstart", (e) => {
-        const horzontalInput = document.getElementById("horizontal")
-        e.dataTransfer.setData("text/plain",[key,Boolean(horzontalInput.checked)])
+        const horzontalInput = document.getElementById("horizontal");
 
-    });
+        e.dataTransfer.setData("text/plain", [key, horzontalInput.checked]);
+      });
+
+      verticalPlacementInput.addEventListener("input", () => {
+        ShipBoxConatiner.classList.add("rotate");
+      });
+      horiontalPlacementInput.addEventListener("input", () => {
+        ShipBoxConatiner.classList.remove("rotate");
+      });
 
       div.appendChild(ShipBoxConatiner);
       div.appendChild(amountLabel);
@@ -159,6 +162,10 @@ export default function HUD() {
     }
   }
 
+  function changeAmountLabel(id, value) {
+    const label = document.getElementById(`${id}-amount`);
+    label.innerText = `X ${value}`;
+  }
   return {
     createGameBoardDisplay,
     drawHitMarker,
@@ -168,5 +175,6 @@ export default function HUD() {
     createWinScreen,
     createStartScreen,
     createShipPlacementBox,
+    changeAmountLabel,
   };
 }

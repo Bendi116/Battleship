@@ -36,21 +36,31 @@ export default function Gameboard() {
   }
 
   function validateShipPlacement(_size, _coords, _alignment = "h") {
+    console.log(
+      "valid ",
+      _size,
+      " ",
+      _coords[0],
+      " ",
+      _coords[1],
+      " ",
+      _alignment,
+    );
     if (_alignment == "v") {
       if (
         _coords[0] < 0 ||
-        _coords[0] > 10 ||
-        _coords[1] + _size < 0 ||
+        _coords[0] > 9 ||
+        _coords[1] < 0 ||
         _coords[1] + _size > 10
       ) {
         throw new Error("Invalid ship placement.");
       }
     } else {
       if (
-        _coords[0] + _size < 0 ||
+        _coords[0] < 0 ||
         _coords[0] + _size > 10 ||
         _coords[1] < 0 ||
-        _coords[1] > 10
+        _coords[1] > 9
       ) {
         throw new Error("Invalid ship placement.");
       }

@@ -8,6 +8,12 @@ export default function gameManager() {
   const computer = Player("computer");
   let computerGridList = [];
 
+  const shipPlacementDict = {
+    1: 4,
+    2: 3,
+    3: 2,
+    4: 1,
+  };
   const hud = HUD();
 
   function playerCallback(i, j) {
@@ -60,16 +66,10 @@ export default function gameManager() {
   }
 
   function startShipPlacement() {
-    const shipPlacementDict = {
-      1: 4,
-      2: 3,
-      3: 2,
-      4: 1,
-    };
     playerGridList = hud.createGameBoardDisplay(
       document.querySelector("#left-board"),
-      ()=>{},
-      getDropGrid
+      () => {},
+      getDropGrid,
     );
 
     hud.createShipPlacementBox(shipPlacementDict);
@@ -78,7 +78,7 @@ export default function gameManager() {
   function startGame() {
     computerGridList = hud.createGameBoardDisplay(
       document.querySelector("#right-board"),
-      playerCallback
+      playerCallback,
     );
     manageShipDraw();
   }
@@ -163,20 +163,46 @@ export default function gameManager() {
     }
   }
 
-  function findGrid(div){
-    for(const row of playerGridList){
-      for(const col of row){
-        if(col == div)
-        {
-          return col
+  function findGrid(div) {
+    for (const row of playerGridList) {
+      for (const col of row) {
+        if (col == div) {
+          return col;
         }
       }
     }
   }
 
-  function getDropGrid(div,size,alignment){
-    const col = findGrid(div)
-    console.log(col,size,alignment)
+  function getGridIndex(grid) {
+    for (const row of playerGridList) {
+      for (const col of row) {
+        if (col == grid) {
+          let x = row.indexOf(col);
+          let y = playerGridList.indexOf(row);
+          return [parseInt(x), parseInt(y)];
+        }
+      }
+    }
+  }
+
+  function getDropGrid(grid, size, alignment) {
+    const col = findGrid(grid);
+    const [x, y] = getGridIndex(grid);
+    size = parseInt(size);
+    player.gameboard.createShip(size, [x, y], alignment);
+    hud.drawShipMarker(col);
+
+    if (size > 1) {
+      if (alignment == "h") {
+        for (let i = 1; i < size; ++i)
+          hud.drawShipMarker(playerGridList[y][x + i]);
+      } else {
+        for (let i = 1; i < size; ++i)
+          hud.drawShipMarker(playerGridList[y + i][x]);
+      }
+    }
+    shipPlacementDict[size]--;
+    hud.changeAmountLabel(size, shipPlacementDict[size]);
   }
 
   return { runGame };
