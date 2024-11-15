@@ -2,12 +2,11 @@ import Player from "./player.js";
 import HUD from "./hud.js";
 
 export default function gameManager() {
-  let playerTurn = true;
   const player = Player("player");
   let playerGridList = [];
   const computer = Player("computer");
   let computerGridList = [];
-
+  const controllerSignal =  new AbortController()
   const shipPlacementDict = {
     1: 4,
     2: 3,
@@ -16,28 +15,40 @@ export default function gameManager() {
   };
   const hud = HUD();
 
-  function playerCallback(i, j) {
+  function mainEventCallback(i, j) {
     if (computer.gameboard.recieveAttack([i, j]) != "alreadyHit") {
-      playerTurn = !playerTurn;
-      manageHitMarker(computerGridList[j][i]);
-      manageComputerShipHitDraw();
-      if (computer.gameboard.allShipSunk()) {
-        playerWin();
-      }
-      let [x, y] = computer.randomHit(
+
+        playerTurn(i,j)
+        computerTurn()
+     
+
+    }
+  }
+
+  function playerTurn(i,j){
+        manageHitMarker(computerGridList[j][i]);
+        manageComputerShipHitDraw();
+        if (computer.gameboard.allShipSunk()) {
+            playerWin();
+        }
+  }
+
+  function computerTurn(){
+        let [x, y] = computer.randomHit(
         player.gameboard.getHitCoords(),
         player.gameboard.getAdjacentHitCoords(),
         (aHC) => {
           player.gameboard.setAdjacentHitCoords(aHC);
         },
-      );
-      player.gameboard.recieveAttack([x, y]);
-      manageHitMarker(playerGridList[y][x]);
-      managePlayerShipHitDraw();
-      if (player.gameboard.allShipSunk()) {
-        computerWin();
-      }
-    }
+        );
+        player.gameboard.recieveAttack([x, y]);
+
+        manageHitMarker(playerGridList[y][x]);
+        managePlayerShipHitDraw();
+
+        if (player.gameboard.allShipSunk()) {
+            computerWin();
+        }
   }
 
   function playerWin() {
@@ -47,17 +58,6 @@ export default function gameManager() {
   function computerWin() {
     hud.createWinScreen("Computer");
   }
-  /*
-    function computerCallback(i,j){
-        if(!playerTurn){
-            if(player.gameboard.recieveAttack([i,j])!="alreadyHit"){
-                playerTurn = !playerTurn 
-                manageHitMarker(playerGridList[j][i])
-                managePlayerShipHitDraw()
-            }
-        }
-
-    }*/
 
   function runGame() {
     hud.createStartScreen(() => {
@@ -70,15 +70,30 @@ export default function gameManager() {
       document.querySelector("#left-board"),
       () => {},
       getDropGrid,
+      controllerSignal
     );
 
-    hud.createShipPlacementBox(shipPlacementDict);
+    hud.createShipPlacementBox(shipPlacementDict, startGame);
+    hud.createStartGameButton();
   }
 
   function startGame() {
+    //remove event listeners in all col div
+    /*
+    for (const row of playerGridList) {
+      for(const col of row){
+        hud.removeColDragEventListeners(col)
+      }
+    }
+      */
+     controllerSignal.abort()
+    
+      
     computerGridList = hud.createGameBoardDisplay(
       document.querySelector("#right-board"),
-      playerCallback,
+      mainEventCallback,
+      ()=>{},
+      controllerSignal
     );
     manageShipDraw();
   }

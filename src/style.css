@@ -178,6 +178,10 @@ header {
   background-color: rgb(125, 145, 137);
 }
 
+.cShip {
+  background-color: rgb(125, 145, 137);
+}
+
 .ship > .hitMarker {
   background-color: rgb(163, 6, 6);
 }
