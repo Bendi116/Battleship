@@ -1,5 +1,10 @@
 export default function HUD() {
   const contentDiv = document.getElementById("content");
+  const draggedData = {
+    size:0,
+    alignment:""
+  };
+
 
   function createGameBoardDisplay(parent, callback = () => {}, setDropShip,removeSignal) {
     const gridSize = 50;
@@ -31,33 +36,69 @@ export default function HUD() {
   }
 
   function addColEventListeners(col,i,j,callback,setDropShip,removeSignal){
+
+
     col.addEventListener("click", () => {
       callback(j, i);
     });
+
+
     col.addEventListener("dragenter", (e) => {
-      console.log(e)
-      e.preventDefault();
-      e.target.classList.add("drag-over");
       //nem csak a target hanem az összes érintett mező meg kéne hogy kapja!!!
+      console.log(e.dataTransfer.types)
+      setDropShip(
+        col,
+        draggedData.size,
+        draggedData.alignment == true ? "h" : "v",
+        e.type
+      );
+
     },{signal: removeSignal.signal});
+
+
     col.addEventListener("dragover", (e) => {
       e.preventDefault();
     },{signal: removeSignal.signal});
+
+
     col.addEventListener("dragleave", (e) => {
-      e.target.classList.remove("drag-over");
+
+      //e.target.classList.remove("drag-over");
+      setDropShip(
+        col,
+        draggedData.size,
+        draggedData.alignment == true ? "h" : "v",
+        e.type
+      );
+
     },{signal: removeSignal.signal});
     
     col.addEventListener("drop", (e) => {
-      console.log(e)
-      e.target.classList.remove("drag-over");
       const data = e.dataTransfer.getData("text/plain");
       setDropShip(
         col,
         data.slice(0, data.indexOf(",")),
         data.slice(data.indexOf(",") + 1) == "true" ? "h" : "v",
+        e.type
       );
+      e.preventDefault();
+      draggedData.alignment = null
+      draggedData.size = 0
+
     },{signal: removeSignal.signal});
+
   
+  
+  }
+
+  function addDragOverClass(div){
+    div.classList.add("drag-over");
+
+  }
+  function removeDragOverClass(div){
+
+    div.classList.remove("drag-over");
+
   }
 
   function drawHitMarker(div) {
@@ -136,17 +177,22 @@ export default function HUD() {
   }
 
   function createShipBoxConatiner(key){
-    const ShipBoxConatiner = document.createElement("div");
-    ShipBoxConatiner.classList.add("shipBoxContainer");
-    ShipBoxConatiner.draggable = true;
+    const ShipBoxContainer = document.createElement("div");
 
-    ShipBoxConatiner.addEventListener("dragstart", (e) => {
-      const horzontalInput = document.getElementById("horizontal");
+    //ShipBoxContainer.classList.add("shipBoxContainer");
+    ShipBoxContainer.draggable = true;
 
+    
+    ShipBoxContainer.addEventListener("dragstart", (e) => {
+    const horzontalInput = document.getElementById("horizontal");
+   draggedData.size=key
+   draggedData.alignment=horzontalInput.checked
       e.dataTransfer.setData("text/plain", [key, horzontalInput.checked]);
     });
+    
 
-    return ShipBoxConatiner
+
+    return ShipBoxContainer
   }
 
   function createAmountLabel(key,value){
@@ -176,22 +222,28 @@ export default function HUD() {
       div.classList.add("shipPlacementOptionContainer");
 
       const ShipBoxConatiner = createShipBoxConatiner(key)
+      const container = document.createElement("div")
+      container.classList.add("shipBoxContainer")
 
       for (let i = 0; i < parseInt(key); ++i) {
 
         const ShipBox = document.createElement("div");
         ShipBox.classList.add("ShipBox");
-        ShipBoxConatiner.appendChild(ShipBox);
+        container.appendChild(ShipBox);
 
       }
       const amountLabel = createAmountLabel(key,value)
       verticalPlacementInput.addEventListener("input", () => {
-        ShipBoxConatiner.classList.add("rotate");
+        container.style.rotate = "90deg"
+       // ShipBoxConatiner.classList.add("rotate");
       });
       horiontalPlacementInput.addEventListener("input", () => {
-        ShipBoxConatiner.classList.remove("rotate");
-      });
+        container.style.rotate = "0deg"
 
+       // ShipBoxConatiner.classList.remove("rotate");
+      });
+    
+      ShipBoxConatiner.appendChild(container)
       div.appendChild(ShipBoxConatiner);
       div.appendChild(amountLabel);
 
@@ -237,6 +289,8 @@ export default function HUD() {
     createStartScreen,
     createShipPlacementBox,
     changeAmountLabel,
-    createStartGameButton  
+    createStartGameButton,
+    addDragOverClass,
+    removeDragOverClass
   };
 }

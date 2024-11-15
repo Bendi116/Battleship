@@ -130,6 +130,8 @@ table {
 
 /*Own code*/
 
+
+
 header {
   size: 100%;
 }
@@ -220,6 +222,8 @@ header {
 }
 
 .shipPlacementOptionContainer {
+  margin-bottom: 20px;
+  height: 100px;
   display: flex;
   flex-direction: row;
 }
@@ -240,3 +244,4 @@ header {
 .hide {
   display: none;
 }
+

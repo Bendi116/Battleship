@@ -34,12 +34,10 @@ export default function Player(type) {
     if (adjacentHitCoords.length > 0) {
       let ind = Math.floor(Math.random() * adjacentHitCoords.length);
       let coord = adjacentHitCoords[ind];
-      console.log("first ", adjacentHitCoords);
 
       adjacentHitCoords = adjacentHitCoords
         .slice(0, ind)
         .concat(adjacentHitCoords.slice(ind + 1));
-      console.log("after concat", adjacentHitCoords);
 
       while (
         JSON.stringify(hitCoords).indexOf(JSON.stringify(coord)) != -1 &&
@@ -51,13 +49,9 @@ export default function Player(type) {
           .slice(0, ind)
           .concat(adjacentHitCoords.slice(ind + 1));
       }
-      console.log("aHC", adjacentHitCoords);
-      console.log("hC", hitCoords);
-      console.log(coord);
+    
       setAdjacentHitCoords(adjacentHitCoords);
       if (JSON.stringify(hitCoords).indexOf(JSON.stringify(coord)) == -1) {
-        console.log("return: ", coord);
-
         return coord;
       }
     }

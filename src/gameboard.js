@@ -36,16 +36,6 @@ export default function Gameboard() {
   }
 
   function validateShipPlacement(_size, _coords, _alignment = "h") {
-    console.log(
-      "valid ",
-      _size,
-      " ",
-      _coords[0],
-      " ",
-      _coords[1],
-      " ",
-      _alignment,
-    );
     if (_alignment == "v") {
       if (
         _coords[0] < 0 ||
@@ -121,7 +111,6 @@ export default function Gameboard() {
         if (!ship.ship.isSunk()) {
           hitAdjacentCoords(coords);
         }
-        // console.log(adjacentHitCoords)
         return "hit";
       }
     }

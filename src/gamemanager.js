@@ -200,25 +200,66 @@ export default function gameManager() {
     }
   }
 
-  function getDropGrid(grid, size, alignment) {
+  function getDropGrid(grid, size, alignment,type) {
     const col = findGrid(grid);
     const [x, y] = getGridIndex(grid);
     size = parseInt(size);
-    player.gameboard.createShip(size, [x, y], alignment);
-    hud.drawShipMarker(col);
+    if(type=="drop"){
+     player.gameboard.createShip(size, [x, y], alignment);
+     // hud.drawShipMarker(col);
+  
+        if (alignment == "h") {
 
-    if (size > 1) {
-      if (alignment == "h") {
-        for (let i = 1; i < size; ++i)
-          hud.drawShipMarker(playerGridList[y][x + i]);
-      } else {
-        for (let i = 1; i < size; ++i)
-          hud.drawShipMarker(playerGridList[y + i][x]);
+          for (let i = 0; i < size; ++i)
+            {hud.drawShipMarker(playerGridList[y][x + i])
+            hud.removeDragOverClass(playerGridList[y][x + i]);}
+          ;
+        } else {
+          for (let i = 0; i < size; ++i)
+            {hud.drawShipMarker(playerGridList[y + i][x]);
+            hud.removeDragOverClass(playerGridList[y + i][x]);}
+
+        }
+      
+      shipPlacementDict[size]--;
+      hud.changeAmountLabel(size, shipPlacementDict[size]);
+    }else if(type=="dragenter"){
+      //clear all
+      for(const row of playerGridList){
+        for(const col of row){
+          hud.removeDragOverClass(col)
+        }
+      }
+
+
+      if (alignment == "h" && x+size <= 10 ) {    
+        for (let i = 0; i < size; ++i){
+          if(x+i>9) break
+          hud.addDragOverClass(playerGridList[y][x + i]);
+        }
+      } else if (alignment == "v" && y+size<=10) {
+        for (let i = 0; i < size; ++i){
+          if(y+i>9) break
+          hud.addDragOverClass(playerGridList[y + i][x]);
+        }
+      }
+    }/*
+    else if("drag-over"){
+      if (alignment == "h" && x+size <= 10 ) {
+        for (let i = 0; i < size; ++i){
+          if(x+i>9) break
+          hud.removeDragOverClass(playerGridList[y][x + i]);
+        }
+      } else if (alignment == "v" && y+size<=10) {
+        for (let i = 0; i < size; ++i){
+          if(y+i>9) break
+         hud.removeDragOverClass(playerGridList[y + i][x]);
+        }
       }
     }
-    shipPlacementDict[size]--;
-    hud.changeAmountLabel(size, shipPlacementDict[size]);
-  }
+      */
+    }
+
 
   return { runGame };
 }
