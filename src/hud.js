@@ -1,3 +1,5 @@
+import testShip from "./images/AircraftCarrier.png"
+
 export default function HUD() {
   const contentDiv = document.getElementById("content");
   const draggedData = {
@@ -62,7 +64,6 @@ export default function HUD() {
 
 
     col.addEventListener("dragleave", (e) => {
-
       //e.target.classList.remove("drag-over");
       setDropShip(
         col,
@@ -108,6 +109,7 @@ export default function HUD() {
   }
 
   function drawShipMarker(div) {
+
     div.classList.add("ship");
   }
 

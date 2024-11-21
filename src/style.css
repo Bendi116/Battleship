@@ -164,6 +164,8 @@ header {
   border: solid 2px black;
   /*border-width: 2px;
     border-color: black;*/
+    pointer-events: auto; 
+    position: relative;
 }
 
 .hitMarker {
@@ -178,10 +180,12 @@ header {
 
 .ship {
   background-color: rgb(125, 145, 137);
+  
 }
 
 .cShip {
   background-color: rgb(125, 145, 137);
+
 }
 
 .ship > .hitMarker {
@@ -245,3 +249,73 @@ header {
   display: none;
 }
 
+.shipImg{
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  
+}
+
+.size4ShipImg{
+  width: 260px;
+  bottom: 2px;
+  right: -200px;
+  transform-origin: 12.5%;
+
+}
+
+.size3ShipImg{
+ width: 350%;
+ right: -115px;
+ top: 2px;
+ transform-origin: 20%;
+}
+.size2ShipImg{
+  width: 250%;
+  right: -60px;
+  top: 3px;
+  transform-origin: 32% ;
+
+
+}
+.size1ShipImg{
+  width: 130%;
+  right: -9px;
+
+  top: 6px;
+  transform-origin: 46% 54% ;
+}
+
+
+.vertivalShipImg{
+  rotate: 90deg;
+  /*bottom:-90px;
+  right: 103px;*/
+}
+
+.hitGif{
+  width: 200%;
+  position: relative;
+  z-index: 2;
+  top: -58px;
+  left: -25px;
+}
+
+.waterHitGif{
+  width: 200%;
+  position: relative;
+  z-index: 2;
+  top:-30px;
+  left:-20px;
+
+}
+
+.fireEffect{
+  position: absolute;
+  z-index: 3;
+  width: 90%;
+  top: -10px;
+  left: 2px;
+  pointer-events: none;
+
+}
