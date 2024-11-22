@@ -130,8 +130,6 @@ table {
 
 /*Own code*/
 
-
-
 header {
   size: 100%;
 }
@@ -139,6 +137,7 @@ header {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 300px;
 }
 
 .header {
@@ -164,8 +163,12 @@ header {
   border: solid 2px black;
   /*border-width: 2px;
     border-color: black;*/
-    pointer-events: auto; 
-    position: relative;
+  pointer-events: auto;
+  position: relative;
+}
+
+.row {
+  margin-right: 100px;
 }
 
 .hitMarker {
@@ -180,12 +183,10 @@ header {
 
 .ship {
   background-color: rgb(125, 145, 137);
-  
 }
 
 .cShip {
   background-color: rgb(125, 145, 137);
-
 }
 
 .ship > .hitMarker {
@@ -213,7 +214,7 @@ header {
   left: 50%;
 }
 
-.ShipBox {
+.shipBox {
   width: 20px;
   height: 20px;
   background-color: aqua;
@@ -249,51 +250,46 @@ header {
   display: none;
 }
 
-.shipImg{
+.shipImg {
   position: absolute;
   z-index: 1;
   pointer-events: none;
-  
 }
 
-.size4ShipImg{
+.size4ShipImg {
   width: 260px;
   bottom: 2px;
   right: -200px;
   transform-origin: 12.5%;
-
 }
 
-.size3ShipImg{
- width: 350%;
- right: -115px;
- top: 2px;
- transform-origin: 20%;
+.size3ShipImg {
+  width: 350%;
+  right: -115px;
+  top: 2px;
+  transform-origin: 20%;
 }
-.size2ShipImg{
+.size2ShipImg {
   width: 250%;
   right: -60px;
   top: 3px;
-  transform-origin: 32% ;
-
-
+  transform-origin: 32%;
 }
-.size1ShipImg{
+.size1ShipImg {
   width: 130%;
   right: -9px;
 
   top: 6px;
-  transform-origin: 46% 54% ;
+  transform-origin: 46% 54%;
 }
 
-
-.vertivalShipImg{
+.vertivalShipImg {
   rotate: 90deg;
   /*bottom:-90px;
   right: 103px;*/
 }
 
-.hitGif{
+.hitGif {
   width: 200%;
   position: relative;
   z-index: 2;
@@ -301,21 +297,24 @@ header {
   left: -25px;
 }
 
-.waterHitGif{
+.waterHitGif {
   width: 200%;
   position: relative;
   z-index: 2;
-  top:-30px;
-  left:-20px;
-
+  top: -30px;
+  left: -20px;
 }
 
-.fireEffect{
+.fireEffect {
   position: absolute;
   z-index: 3;
   width: 90%;
   top: -10px;
   left: 2px;
   pointer-events: none;
+}
 
+.dragContainer {
+  width: fit-content;
+  height: fit-content;
 }

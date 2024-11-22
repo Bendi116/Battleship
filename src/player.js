@@ -49,7 +49,7 @@ export default function Player(type) {
           .slice(0, ind)
           .concat(adjacentHitCoords.slice(ind + 1));
       }
-    
+
       setAdjacentHitCoords(adjacentHitCoords);
       if (JSON.stringify(hitCoords).indexOf(JSON.stringify(coord)) == -1) {
         return coord;
