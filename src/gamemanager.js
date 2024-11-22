@@ -1,17 +1,9 @@
 import Player from "./player.js";
 import HUD from "./hud.js";
 import classListHandler from "./classListHandler.js";
+import animationHandler  from "./animationHandler.js";
 
-//image imports
-import aircraftCarrier from "./images/AircraftCarrier.png"; //size 4 ship
-import battleShip from "./images/BattleShip.png"; //size 3 ship
-import cruiser from "./images/Cruiser.png"; //size 2 ship
-import patrolBoat from "./images/PatrolBoat.png"; //size 1 ship
 
-//gifs
-import hitGif from "./images/hit.gif";
-import waterHitGif from "./images/waterHit.gif";
-import fireEffect from "./images/fireEffect.gif";
 
 export default function gameManager() {
   const player = Player("player");
@@ -27,14 +19,12 @@ export default function gameManager() {
   };
   const hud = HUD();
   const cLHandler = classListHandler();
+  const aHandler = animationHandler()
+ 
 
-  const shipImages = {
-    4: aircraftCarrier,
-    3: battleShip,
-    2: cruiser,
-    1: patrolBoat,
-  };
   let enabelPlayerAction = true;
+
+  //functions
 
   function mainEventCallback(i, j) {
     if (enabelPlayerAction) {
@@ -51,7 +41,7 @@ export default function gameManager() {
 
   function playerTurn(i, j) {
     //todo
-    addHitAnimation(computerGridList[j][i]);
+    aHandler.addHitAnimation(computerGridList[j][i]);
     manageHitMarker(computerGridList[j][i]);
     manageComputerShipHitDraw();
     if (computer.gameboard.allShipSunk()) {
@@ -69,7 +59,7 @@ export default function gameManager() {
     );
     player.gameboard.recieveAttack([x, y]);
     //todo
-    addHitAnimation(playerGridList[y][x]);
+    aHandler.addHitAnimation(playerGridList[y][x]);
     manageHitMarker(playerGridList[y][x]);
     managePlayerShipHitDraw();
 
@@ -100,21 +90,12 @@ export default function gameManager() {
       controllerSignal,
     );
 
-    hud.createShipPlacementBox(shipPlacementDict, startGame, createShipImage);
+    hud.createShipPlacementBox(shipPlacementDict, startGame, aHandler.addShipImage);
     hud.createStartGameButton();
   }
 
   function startGame() {
-    //remove event listeners in all col div
-    /*
-    for (const row of playerGridList) {
-      for(const col of row){
-        hud.removeColDragEventListeners(col)
-      }
-    }
-      */
     controllerSignal.abort();
-
     computerGridList = hud.createGameBoardDisplay(
       document.querySelector("#right-board"),
       mainEventCallback,
@@ -126,7 +107,7 @@ export default function gameManager() {
 
   function manageComputerBoardShipDraw() {
     for (let ship of computer.gameboard.getShips()) {
-      createShipImage(
+      aHandler.addShipImage(
         computerGridList[ship.coords[0][1]][ship.coords[0][0]],
         ship.size,
         ship.alignment,
@@ -172,6 +153,7 @@ export default function gameManager() {
     }
   }
 
+  //helper
   function hitPlayerAdjacent(coord) {
     for (let i = -1; i < 2; ++i) {
       for (let j = -1; j < 2; ++j) {
@@ -188,6 +170,7 @@ export default function gameManager() {
     }
   }
 
+  //helper
   function hitComputerAdjacent(coord) {
     for (let i = -1; i < 2; ++i) {
       for (let j = -1; j < 2; ++j) {
@@ -204,6 +187,7 @@ export default function gameManager() {
     }
   }
 
+  //helper
   function findGrid(div) {
     for (const row of playerGridList) {
       for (const col of row) {
@@ -214,6 +198,7 @@ export default function gameManager() {
     }
   }
 
+  //helper
   function getGridIndex(grid) {
     for (const row of playerGridList) {
       for (const col of row) {
@@ -234,26 +219,12 @@ export default function gameManager() {
       createDropShip([x, y], size, alignment);
     } else if (type == "dragenter") {
       handleDragEnter([x, y], size, alignment);
-    } /*
-    else if("drag-over"){
-      if (alignment == "h" && x+size <= 10 ) {
-        for (let i = 0; i < size; ++i){
-          if(x+i>9) break
-          hud.removeDragOverClass(playerGridList[y][x + i]);
-        }
-      } else if (alignment == "v" && y+size<=10) {
-        for (let i = 0; i < size; ++i){
-          if(y+i>9) break
-         hud.removeDragOverClass(playerGridList[y + i][x]);
-        }
-      }
     }
-      */
   }
   function createDropShip([x, y], size, alignment) {
     player.gameboard.createShip(size, [x, y], alignment);
     // hud.drawShipMarker(col);
-    createShipImage(playerGridList[y][x], size, alignment);
+    aHandler.addShipImage(playerGridList[y][x], size, alignment);
 
     if (alignment == "h") {
       for (let i = 0; i < size; ++i) {
@@ -295,37 +266,7 @@ export default function gameManager() {
     }
   }
 
-  function createShipImage(shipDiv, size, alignment) {
-    const shipImg = document.createElement("img");
-    shipImg.src = shipImages[size];
-    shipImg.classList.add("shipImg");
-    shipImg.classList.add(`size${size}ShipImg`);
-    if (alignment == "v") shipImg.classList.add("vertivalShipImg");
-    shipDiv.appendChild(shipImg);
-  }
 
-  function addHitAnimation(div) {
-    const img = document.createElement("img");
-    console.log(div.classList);
-    if (div.classList.contains("cShip") || div.classList.contains("ship")) {
-      img.src = hitGif;
-      img.classList.add("hitGif");
-      setTimeout(() => {
-        img.src = fireEffect;
-        img.classList.remove("hitGif");
-        img.classList.add("fireEffect");
-        //img.remove()
-      }, 850);
-    } else {
-      img.src = waterHitGif;
-      img.classList.add("waterHitGif");
-      setTimeout(() => {
-        img.remove();
-      }, 1300);
-    }
-
-    div.appendChild(img);
-  }
 
   return { runGame };
 }
