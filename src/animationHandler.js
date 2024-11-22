@@ -28,7 +28,6 @@ export default function animationHandler(){
 
     function addHitAnimation(div) {
         const img = document.createElement("img");
-        console.log(div.classList);
         if (div.classList.contains("cShip") || div.classList.contains("ship")) {
         img.src = hitGif;
         img.classList.add("hitGif");
@@ -36,8 +35,7 @@ export default function animationHandler(){
             img.src = fireEffect;
             img.classList.remove("hitGif");
             img.classList.add("fireEffect");
-            //img.remove()
-        }, 850);
+        }, 910);
         } else {
         img.src = waterHitGif;
         img.classList.add("waterHitGif");

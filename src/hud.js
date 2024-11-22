@@ -27,7 +27,7 @@ export default function HUD() {
   function createGameBoardDisplay(
     parent,
     playerTurnCallBack = () => {},
-    setDropShip,
+    handleDragEventData,
     removeSignal,
   ) {
     let divList = [];
@@ -41,7 +41,7 @@ export default function HUD() {
           i,
           j,
           playerTurnCallBack,
-          setDropShip,
+          handleDragEventData,
           removeSignal,
           draggedData,
         );

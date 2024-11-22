@@ -6,26 +6,36 @@ import { getGridIndex,hitAdjacent } from "./helper.js";
 
 
 export default function gameManager() {
+  //const factory funtions instanceses
   const player = Player("player");
-  let playerGridList = [];
   const computer = Player("computer");
-  let computerGridList = [];
-  const controllerSignal = new AbortController();
+  const cLHandler = classListHandler();
+  const aHandler = animationHandler()
+  const hud = HUD();
+
+  //dict for ship placment ,show how much ships can be placed from one type
   const shipPlacementDict = {
     1: 4,
     2: 3,
     3: 2,
     4: 1,
   };
-  const hud = HUD();
-  const cLHandler = classListHandler();
-  const aHandler = animationHandler()
+
+  //gridLists of the gamenoard matrixes div elements
+  let playerGridList = [];
+  let computerGridList = [];
+
+  //controller signal for drag evetns
+  const controllerSignal = new AbortController();
+  
+ 
  
 
   let enabelPlayerAction = true;
 
   //functions
 
+  //its trigger when player choose a grid and fire than the computer player comes reapedatly
   function mainEventCallback(i, j) {
     if (enabelPlayerAction) {
       if (computer.gameboard.recieveAttack([i, j]) != "alreadyHit") {
@@ -39,16 +49,17 @@ export default function gameManager() {
     }
   }
 
+  //handle player turn 
   function playerTurn(i, j) {
-    //todo
     aHandler.addHitAnimation(computerGridList[j][i]);
-    manageHitMarker(computerGridList[j][i]);
-    manageComputerShipHitDraw();
+    placeHitMarker(computerGridList[j][i]);
+    handleShipIsSunk(computer.gameboard, computerGridList)
     if (computer.gameboard.allShipSunk()) {
-      playerWin();
+      hud.createWinScreen("PLayer");
     }
   }
 
+  //handle computer turn with random hit
   function computerTurn() {
     let [x, y] = computer.randomHit(
       player.gameboard.getHitCoords(),
@@ -58,35 +69,29 @@ export default function gameManager() {
       },
     );
     player.gameboard.recieveAttack([x, y]);
-    //todo
     aHandler.addHitAnimation(playerGridList[y][x]);
-    manageHitMarker(playerGridList[y][x]);
-    managePlayerShipHitDraw();
-
+    placeHitMarker(playerGridList[y][x]);
+    handleShipIsSunk(player.gameboard, playerGridList)
     if (player.gameboard.allShipSunk()) {
-      computerWin();
+      hud.createWinScreen("Computer");
     }
   }
 
-  function playerWin() {
-    hud.createWinScreen("PLayer");
-  }
 
-  function computerWin() {
-    hud.createWinScreen("Computer");
-  }
 
+//start game , create a start button
   function runGame() {
     hud.createStartScreen(() => {
       startShipPlacement();
     });
   }
 
+  //handle ship placment phase
   function startShipPlacement() {
     playerGridList = hud.createGameBoardDisplay(
       document.querySelector("#left-board"),
       () => {},
-      getDropGrid,
+      handleDragEventData,
       controllerSignal,
     );
 
@@ -94,6 +99,7 @@ export default function gameManager() {
     hud.createStartGameButton();
   }
 
+  //the game starter function create and draw enemy board , remove drag events from col and 
   function startGame() {
     controllerSignal.abort();
     computerGridList = hud.createGameBoardDisplay(
@@ -102,10 +108,11 @@ export default function gameManager() {
       () => {},
       controllerSignal,
     );
-    manageComputerBoardShipDraw();
+    drawComputerShips();
   }
 
-  function manageComputerBoardShipDraw() {
+  //draw computer ship with images
+  function drawComputerShips() {
     for (let ship of computer.gameboard.getShips()) {
       aHandler.addShipImage(
         computerGridList[ship.coords[0][1]][ship.coords[0][0]],
@@ -118,29 +125,20 @@ export default function gameManager() {
     }
   }
 
-  function manageComputerShipHitDraw() {
-    for (let s of computer.gameboard.getShips()) {
+//find if a ship is sunk and handle its effects
+  function handleShipIsSunk(gameboard, gridList){
+    for (let s of gameboard.getShips()) {
       if (s.ship.isSunk()) {
         for (let coord of s.coords) {
-          cLHandler.addShipIsSunkClass(computerGridList[coord[1]][coord[0]]);
-          hitAdjacent(coord,computer.gameboard,computerGridList,manageHitMarker);
+          cLHandler.addShipIsSunkClass(gridList[coord[1]][coord[0]]);
+          hitAdjacent(coord,gameboard,gridList,placeHitMarker);
         }
       }
     }
   }
 
-  function managePlayerShipHitDraw() {
-    for (let s of player.gameboard.getShips()) {
-      if (s.ship.isSunk()) {
-        for (let coord of s.coords) {
-          cLHandler.addShipIsSunkClass(playerGridList[coord[1]][coord[0]]);
-          hitAdjacent(coord,player.gameboard,playerGridList,manageHitMarker);
-        }
-      }
-    }
-  }
-
-  function manageHitMarker(div) {
+  //place a hit marker in the current grid div
+  function placeHitMarker(div) {
     let hasHitMarker = false;
     for (let c of div.childNodes) {
       if (c.classList.contains("hitMarker")) {
@@ -153,16 +151,18 @@ export default function gameManager() {
     }
   }
 
-  function getDropGrid(grid, size, alignment, type) {
-    // const col = findGrid(grid);
+  //get data from drag event
+  function handleDragEventData(grid, size, alignment, type) {
     const [x, y] = getGridIndex(grid,playerGridList);
     size = parseInt(size);
     if (type == "drop") {
       createDropShip([x, y], size, alignment);
     } else if (type == "dragenter") {
-      handleDragEnter([x, y], size, alignment);
+      handleDragEnterEvent([x, y], size, alignment);
     }
   }
+
+  //create a ship from drop event
   function createDropShip([x, y], size, alignment) {
     player.gameboard.createShip(size, [x, y], alignment);
     // hud.drawShipMarker(col);
@@ -183,6 +183,7 @@ export default function gameManager() {
     hud.changeAmountLabel(size, shipPlacementDict[size]);
   }
 
+  //clear all drag-over class in the gameboard matrix
   function clearDragOverClass() {
     for (const row of playerGridList) {
       for (const col of row) {
@@ -191,7 +192,8 @@ export default function gameManager() {
     }
   }
 
-  function handleDragEnter([x, y], size, alignment) {
+  //handle what should happens when a dragged ship enter into a gameboard grid
+  function handleDragEnterEvent([x, y], size, alignment) {
     //clear all
     clearDragOverClass();
 

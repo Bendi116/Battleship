@@ -4,20 +4,20 @@ export default function addGridEventListeners(
   i,
   j,
   playerTurnCallBack,
-  setDropShip,
+  handleDragEventData,
   removeSignal,
   draggedData,
 ) {
   //click event
   gridAddClick(col, i, j, playerTurnCallBack);
   //add dragenter event
-  gridAddDragEnter(col, setDropShip, removeSignal, draggedData);
+  gridAddDragEnter(col, handleDragEventData, removeSignal, draggedData);
   //add dragover event
   gridAddDragOver(col, removeSignal);
   //add dragleave event
-  gridAddDragLeave(col, setDropShip, removeSignal, draggedData);
+  gridAddDragLeave(col, handleDragEventData, removeSignal, draggedData);
   //add drop event
-  gridAddDrop(col, setDropShip, removeSignal, draggedData);
+  gridAddDrop(col, handleDragEventData, removeSignal, draggedData);
 }
 
 //add click event
@@ -28,11 +28,11 @@ function gridAddClick(col, i, j, playerTurnCallBack) {
 }
 
 //add dragenter event
-function gridAddDragEnter(col, setDropShip, removeSignal, draggedData) {
+function gridAddDragEnter(col, handleDragEventData, removeSignal, draggedData) {
   col.addEventListener(
     "dragenter",
     (e) => {
-      setDropShip(
+      handleDragEventData(
         col,
         draggedData.size,
         draggedData.alignment == true ? "h" : "v",
@@ -55,11 +55,11 @@ function gridAddDragOver(col, removeSignal) {
 }
 
 //add dragleave event
-function gridAddDragLeave(col, setDropShip, removeSignal, draggedData) {
+function gridAddDragLeave(col, handleDragEventData, removeSignal, draggedData) {
   col.addEventListener(
     "dragleave",
     (e) => {
-      setDropShip(
+      handleDragEventData(
         col,
         draggedData.size,
         draggedData.alignment == true ? "h" : "v",
@@ -70,12 +70,12 @@ function gridAddDragLeave(col, setDropShip, removeSignal, draggedData) {
   );
 }
 //add drop event
-function gridAddDrop(col, setDropShip, removeSignal, draggedData) {
+function gridAddDrop(col, handleDragEventData, removeSignal, draggedData) {
   col.addEventListener(
     "drop",
     (e) => {
       const data = e.dataTransfer.getData("text/plain");
-      setDropShip(
+      handleDragEventData(
         col,
         data.slice(0, data.indexOf(",")),
         data.slice(data.indexOf(",") + 1) == "true" ? "h" : "v",

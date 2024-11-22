@@ -6,7 +6,6 @@ export function createHoriontalPlacementInput() {
   horiontalPlacementInput.checked = true;
 
   horiontalPlacementInput.addEventListener("input", () => {
-    console.log(document.getElementsByClassName("shipBoxContainer"));
     Array.from(document.getElementsByClassName("shipBoxContainer")).forEach(
       (div) => (div.style.rotate = "0deg"),
     );
@@ -22,7 +21,6 @@ export function createVerticalPlacementInput() {
   verticalPlacementInput.name = "placmentDirection";
 
   verticalPlacementInput.addEventListener("input", () => {
-    console.log(document.getElementsByClassName("shipBoxContainer"));
     Array.from(document.getElementsByClassName("shipBoxContainer")).forEach(
       (div) => (div.style.rotate = "90deg"),
     );
