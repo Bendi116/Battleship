@@ -2,7 +2,7 @@ import Player from "./player.js";
 import HUD from "./hud.js";
 import classListHandler from "./classListHandler.js";
 import animationHandler  from "./animationHandler.js";
-
+import { getGridIndex,hitAdjacent } from "./helper.js";
 
 
 export default function gameManager() {
@@ -123,7 +123,7 @@ export default function gameManager() {
       if (s.ship.isSunk()) {
         for (let coord of s.coords) {
           cLHandler.addShipIsSunkClass(computerGridList[coord[1]][coord[0]]);
-          hitComputerAdjacent(coord);
+          hitAdjacent(coord,computer.gameboard,computerGridList,manageHitMarker);
         }
       }
     }
@@ -134,7 +134,7 @@ export default function gameManager() {
       if (s.ship.isSunk()) {
         for (let coord of s.coords) {
           cLHandler.addShipIsSunkClass(playerGridList[coord[1]][coord[0]]);
-          hitPlayerAdjacent(coord);
+          hitAdjacent(coord,player.gameboard,playerGridList,manageHitMarker);
         }
       }
     }
@@ -153,67 +153,9 @@ export default function gameManager() {
     }
   }
 
-  //helper
-  function hitPlayerAdjacent(coord) {
-    for (let i = -1; i < 2; ++i) {
-      for (let j = -1; j < 2; ++j) {
-        if (
-          coord[0] + i >= 0 &&
-          coord[0] + i <= 9 &&
-          coord[1] + j >= 0 &&
-          coord[1] + j <= 9
-        ) {
-          player.gameboard.recieveAttack([coord[0] + i, coord[1] + j]);
-          manageHitMarker(playerGridList[coord[1] + j][coord[0] + i]);
-        }
-      }
-    }
-  }
-
-  //helper
-  function hitComputerAdjacent(coord) {
-    for (let i = -1; i < 2; ++i) {
-      for (let j = -1; j < 2; ++j) {
-        if (
-          coord[0] + i >= 0 &&
-          coord[0] + i <= 9 &&
-          coord[1] + j >= 0 &&
-          coord[1] + j <= 9
-        ) {
-          computer.gameboard.recieveAttack([coord[0] + i, coord[1] + j]);
-          manageHitMarker(computerGridList[coord[1] + j][coord[0] + i]);
-        }
-      }
-    }
-  }
-
-  //helper
-  function findGrid(div) {
-    for (const row of playerGridList) {
-      for (const col of row) {
-        if (col == div) {
-          return col;
-        }
-      }
-    }
-  }
-
-  //helper
-  function getGridIndex(grid) {
-    for (const row of playerGridList) {
-      for (const col of row) {
-        if (col == grid) {
-          let x = row.indexOf(col);
-          let y = playerGridList.indexOf(row);
-          return [parseInt(x), parseInt(y)];
-        }
-      }
-    }
-  }
-
   function getDropGrid(grid, size, alignment, type) {
     // const col = findGrid(grid);
-    const [x, y] = getGridIndex(grid);
+    const [x, y] = getGridIndex(grid,playerGridList);
     size = parseInt(size);
     if (type == "drop") {
       createDropShip([x, y], size, alignment);
