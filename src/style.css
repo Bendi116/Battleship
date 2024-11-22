@@ -84,12 +84,12 @@ time,
 mark,
 audio,
 video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -103,218 +103,249 @@ hgroup,
 menu,
 nav,
 section {
-  display: block;
+    display: block;
 }
 body {
-  line-height: 1;
+    line-height: 1;
 }
 ol,
 ul {
-  list-style: none;
+    list-style: none;
 }
 blockquote,
 q {
-  quotes: none;
+    quotes: none;
 }
 blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
-  content: none;
+    content: "";
+    content: none;
 }
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 /*Own code*/
 
+body {
+    user-select: none;
+}
+
 header {
-  size: 100%;
+    size: 100%;
 }
 .main {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  height: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 300px;
 }
 
 .header {
-  height: 10vh;
+    height: 10vh;
 }
 
 .content {
-  margin-left: 100px;
-  margin-right: 100px;
+    margin-left: 100px;
+    margin-right: 100px;
 
-  width: 90vw;
-  height: 85vh;
+    width: 90vw;
+    height: 85vh;
 
-  display: grid;
-  grid-template-columns: 4fr 1fr 4fr;
-  grid-template-rows: 1fr;
+    display: grid;
+    grid-template-columns: 4fr 1fr 4fr;
+    grid-template-rows: 1fr;
 }
 
 .grid {
-  width: 50px;
-  height: 50px;
-  background-color: rgb(150, 205, 234);
-  border: solid 2px black;
-  /*border-width: 2px;
+    width: 50px;
+    height: 50px;
+    background-color: rgb(150, 205, 234);
+    border: solid 2px black;
+    /*border-width: 2px;
     border-color: black;*/
-  pointer-events: auto;
-  position: relative;
+    pointer-events: auto;
+    position: relative;
 }
 
 .row {
-  margin-right: 100px;
+    margin-right: 100px;
 }
 
 .hitMarker {
-  border-radius: 100%;
-  background-color: black;
-  position: relative;
-  top: 20px;
-  left: 20px;
-  height: 10px;
-  width: 10px;
+    border-radius: 100%;
+    background-color: black;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    height: 10px;
+    width: 10px;
 }
 
 .ship {
-  background-color: rgb(125, 145, 137);
+    background-color: rgb(125, 145, 137);
 }
-
+/*
 .cShip {
   background-color: rgb(125, 145, 137);
 }
-
+*/
 .ship > .hitMarker {
-  background-color: rgb(163, 6, 6);
+    background-color: rgb(163, 6, 6);
 }
 .cShip > .hitMarker {
-  background-color: rgb(163, 6, 6);
+    background-color: rgb(163, 6, 6);
 }
 
 .sunk {
-  background-color: rgb(52, 56, 54);
+    background-color: rgb(52, 56, 54);
 }
 
 .winScreen {
-  text-align: center;
-  align-content: center;
-  justify-content: center;
-  font-size: 64px;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    font-size: 64px;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 #startBtn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
 }
 
 .shipBox {
-  width: 20px;
-  height: 20px;
-  background-color: aqua;
-  border: 1px solid black;
+    width: 35px;
+    height: 35px;
+    background-color: aqua;
+    border: 1px solid black;
 }
 
 #shipPlacmentDiv {
-  grid-row: 1;
-  grid-column: 3;
+    grid-row: 1;
+    grid-column: 3;
 }
 
 .shipPlacementOptionContainer {
-  margin-bottom: 20px;
-  height: 100px;
-  display: flex;
-  flex-direction: row;
+    /* margin-bottom: 50px;*/
+    padding-bottom: 30px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
 }
 
 .shipBoxContainer {
-  display: flex;
-  flex-direction: row;
+    position: relative;
+    display: flex;
+    flex-direction: row;
 }
 
 .drag-over {
-  border: dashed 3px red;
+    border: dashed 3px red;
 }
 
 .rotate {
-  rotate: 90deg;
+    rotate: 90deg;
 }
 
 .hide {
-  display: none;
+    display: none;
 }
 
 .shipImg {
-  position: absolute;
-  z-index: 1;
-  pointer-events: none;
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
 }
 
 .size4ShipImg {
-  width: 260px;
-  bottom: 2px;
-  right: -200px;
-  transform-origin: 12.5%;
+    width: 260px;
+    bottom: 2px;
+    right: -200px;
+    transform-origin: 12.5%;
 }
 
 .size3ShipImg {
-  width: 350%;
-  right: -115px;
-  top: 2px;
-  transform-origin: 20%;
+    width: 350%;
+    right: -115px;
+    top: 2px;
+    transform-origin: 20%;
 }
 .size2ShipImg {
-  width: 250%;
-  right: -60px;
-  top: 3px;
-  transform-origin: 32%;
+    width: 250%;
+    right: -60px;
+    top: 3px;
+    transform-origin: 32%;
 }
 .size1ShipImg {
-  width: 130%;
-  right: -9px;
+    width: 130%;
+    right: -9px;
 
-  top: 6px;
-  transform-origin: 46% 54%;
+    top: 6px;
+    transform-origin: 46% 54%;
 }
 
 .vertivalShipImg {
-  rotate: 90deg;
-  /*bottom:-90px;
+    rotate: 90deg;
+    /*bottom:-90px;
   right: 103px;*/
 }
 
 .hitGif {
-  width: 200%;
-  position: relative;
-  z-index: 2;
-  top: -58px;
-  left: -25px;
+    width: 200%;
+    position: relative;
+    z-index: 2;
+    top: -58px;
+    left: -25px;
 }
 
 .waterHitGif {
-  width: 200%;
-  position: relative;
-  z-index: 2;
-  top: -30px;
-  left: -20px;
+    width: 200%;
+    position: relative;
+    z-index: 2;
+    top: -30px;
+    left: -20px;
 }
 
 .fireEffect {
-  position: absolute;
-  z-index: 3;
-  width: 90%;
-  top: -10px;
-  left: 2px;
-  pointer-events: none;
+    position: absolute;
+    z-index: 3;
+    width: 90%;
+    top: -10px;
+    left: 2px;
+    pointer-events: none;
 }
 
 .dragContainer {
-  width: fit-content;
-  height: fit-content;
+    width: fit-content;
+    height: fit-content;
+    padding-bottom: 50px;
+}
+
+.shipBoxContainer > .size4ShipImg {
+    width: 200px;
+    bottom: 0;
+    right: -40px;
+}
+
+.shipBoxContainer > .size3ShipImg {
+    width: 130px;
+    bottom: 0;
+    left: -8px;
+}
+
+.shipBoxContainer > .size2ShipImg {
+    width: 95px;
+    bottom: 0;
+    left: -14px;
+}
+
+.shipBoxContainer > .size1ShipImg {
+    width: 50px;
+    bottom: 0;
+    left: -5px;
 }
