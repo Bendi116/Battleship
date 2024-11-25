@@ -30,6 +30,12 @@ export default function HUD() {
         handleDragEventData,
         removeSignal,
     ) {
+        createNumsLabel(parent)
+        createCharsLabel(parent)
+
+        //create grid 
+        const matrix = document.createElement("div")
+        matrix.id = "matrix"
         let divList = []
         for (let i = 0; i < 10; ++i) {
             let divRow = []
@@ -49,11 +55,37 @@ export default function HUD() {
                 divRow.push(col)
             }
             divList.push(divRow)
-            parent.appendChild(row)
+            matrix.appendChild(row)
         }
+        parent.appendChild(matrix)
 
         return divList
     }
+
+    //create nums label
+    function createNumsLabel(parent){
+        const numLabelParent = document.createElement("div")
+        numLabelParent.classList.add("num-label-parent")
+        for (let index = 0; index < 10; index++) {
+            const numLabel = document.createElement("div")
+            numLabel.innerText=index+1   
+            numLabelParent.appendChild(numLabel)
+        }
+        parent.appendChild(numLabelParent)
+    }
+
+     //create chars label
+    function createCharsLabel(parent){
+        const charLabelParent = document.createElement("div")
+        charLabelParent.classList.add("char-label-parent")
+        const chars = ['A','B',"C","D","E","F","G","H","I","J"]
+        for (let index = 0; index < 10; index++) {
+            const charLabel = document.createElement("div")
+            charLabel.innerText=chars[index]  
+            charLabelParent.appendChild(charLabel)
+        }
+        parent.appendChild(charLabelParent)
+    } 
 
     //create win screen that dpened on the strin(winner) that it gets as a argument
     function createWinScreen(winner) {

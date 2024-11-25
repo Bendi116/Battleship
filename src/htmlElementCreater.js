@@ -100,8 +100,6 @@ export function createShipBoxContainer() {
 
 export function createRow() {
     const row = document.createElement("div")
-    row.style.display = "flex"
-    row.style.flexDirection = "row"
     row.classList.add("row")
     //  row.style.height = gridSize + "px";
     return row
