@@ -13,7 +13,8 @@ Todo Finished:
 
 ---
 
-In progress: 
+In progress:
+--refactoring css file into separeted files 
 --slove drag effect? maybe too many calculation at clear??
 --draw matrix nrow and col num and char 
 --inform the user what happenign and what to do 
