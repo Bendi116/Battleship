@@ -24,10 +24,7 @@ export default function classListHandler() {
     function addcShipMarkerClass(div) {
         div.classList.add("cShip")
     }
-    //add sunk css class
-    function addShipIsSunkClass(div) {
-        div.classList.add("sunk")
-    }
+  
 
     return {
         addDragOverClass,
@@ -35,6 +32,5 @@ export default function classListHandler() {
         addHitMarkerClass,
         addShipMarkerClass,
         addcShipMarkerClass,
-        addShipIsSunkClass,
     }
 }

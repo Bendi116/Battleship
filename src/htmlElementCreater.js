@@ -25,6 +25,7 @@ export function createVerticalPlacementInput() {
             (div) => (div.style.rotate = "90deg"),
         )
     })
+        
 
     return verticalPlacementInput
 }
@@ -86,7 +87,7 @@ export function createStartGameButton(startGameCallBack, allShipIsPlaced) {
 
 export function createShipPlacementOptionContainer(key) {
     const div = document.createElement("div")
-    div.id = `${key}-container`
+    div.id = `container-${key}`
     div.classList.add("shipPlacementOptionContainer")
 
     return div

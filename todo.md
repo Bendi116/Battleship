@@ -10,15 +10,17 @@ Todo Finished:
 #--diasble to mark off anything in the webpage
 #--solve dropArea effectproblem
 #--prettier 4 space indetion level at tabulation 
+#--refactoring css file into separeted files
+#--slove drag effect? maybe too many calculation at clear??-> maybe the browser was slow not its ok
+#--draw matrix nrow and col num and char 
+#--wrong label placement
+#--responsive hit ,sunk,ship, markers 
+
 
 ---
 
 In progress:
---refactoring css file into separeted files 
---slove drag effect? maybe too many calculation at clear??
---draw matrix nrow and col num and char 
 --inform the user what happenign and what to do 
---responsive hit ,sunk,ship, markers 
 --use the error to inform the user in shipPlacment 
 ----like hitMarker after gif animation 
 --responsove design

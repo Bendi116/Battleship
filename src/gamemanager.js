@@ -14,9 +14,9 @@ export default function gameManager() {
 
     //dict for ship placment ,show how much ships can be placed from one type
     const shipPlacementDict = {
-        1: 4,
-        2: 3,
-        3: 2,
+        1: 1,
+        2: 1,
+        3: 1,
         4: 1,
     }
 
@@ -108,7 +108,7 @@ export default function gameManager() {
             () => {},
             controllerSignal,
         )
-        drawComputerShips()
+       drawComputerShips()
     }
 
     //draw computer ship with images
@@ -134,7 +134,7 @@ export default function gameManager() {
                     )
                 }
                 for (let coord of ship.coords) {
-                    cLHandler.addShipIsSunkClass(gridList[coord[1]][coord[0]])
+                   // cLHandler.addShipIsSunkClass(gridList[coord[1]][coord[0]])
                     hitAdjacent(coord, gameboard, gridList, placeHitMarker)
                 }
             }

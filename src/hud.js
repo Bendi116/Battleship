@@ -32,7 +32,6 @@ export default function HUD() {
     ) {
         createNumsLabel(parent)
         createCharsLabel(parent)
-
         //create grid 
         const matrix = document.createElement("div")
         matrix.id = "matrix"
@@ -90,8 +89,12 @@ export default function HUD() {
     //create win screen that dpened on the strin(winner) that it gets as a argument
     function createWinScreen(winner) {
         delAllChildOfContentDiv()
-        contentDiv.innerText = winner + " win the game!"
-        contentDiv.classList.add("winScreen")
+
+        const winScreenDiv = document.createElement("div")
+        winScreenDiv.id="winScreen"
+        winScreenDiv.innerText = winner + " win the game!"
+        contentDiv.appendChild(winScreenDiv)
+        
     }
 
     //create start screen
@@ -103,6 +106,7 @@ export default function HUD() {
             hideStartBtn()
         })
         startBtn.innerText = "Start"
+
         contentDiv.appendChild(startBtn)
     }
 
@@ -124,6 +128,9 @@ export default function HUD() {
 
     //hide start button
     function hideStartBtn() {
+        const title = document.getElementById("title")
+        title.id= "smallerTitle"
+
         const startBtn = document.getElementById("startBtn")
         contentDiv.removeChild(startBtn)
     }
@@ -150,12 +157,17 @@ export default function HUD() {
             startGameCallBack,
             allShipIsPlaced,
         )
+        const shipPlacementLabels = document.createElement("div")
+        shipPlacementLabels.id = "shipPlacementLabels"
 
         //append new childes
-        shipPlacementDiv.appendChild(horiontalPlacementInput)
-        shipPlacementDiv.appendChild(horiontalPlacementInputLabel)
-        shipPlacementDiv.appendChild(verticalPlacementInput)
-        shipPlacementDiv.appendChild(verticalPlacementInputLabel)
+        shipPlacementLabels.appendChild(horiontalPlacementInput)
+        shipPlacementLabels.appendChild(horiontalPlacementInputLabel)
+        shipPlacementLabels.appendChild(verticalPlacementInput)
+        shipPlacementLabels.appendChild(verticalPlacementInputLabel)
+
+        shipPlacementDiv.appendChild(shipPlacementLabels)
+
 
         for (const [key, value] of Object.entries(shipPlacementDict)) {
             //create divs
@@ -168,11 +180,11 @@ export default function HUD() {
             const shipBoxConatiner = createShipBoxContainer()
             const amountLabel = createAmountLabel(key, value)
 
+            
             for (let i = 0; i < parseInt(key); ++i) {
                 const ShipBox = createShipBox()
                 shipBoxConatiner.appendChild(ShipBox)
             }
-            console.log(horiontalPlacementInput.checked)
             createShipImage(
                 shipBoxConatiner,
                 key,
@@ -188,8 +200,8 @@ export default function HUD() {
         }
 
         //append childes
+        shipPlacementDiv.appendChild(startGameBtn)
         contentDiv.appendChild(shipPlacementDiv)
-        contentDiv.appendChild(startGameBtn)
     }
 
     return {
